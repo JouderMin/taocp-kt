@@ -1,0 +1,22 @@
+[versions]
+kotlin = "2.3.20"
+junit = "6.0.3"
+assertj = "3.27.7"
+mockito = "5.23.0"
+kotlin-logging = "8.0.01"
+kover = "0.9.7"
+
+[libraries]
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+assertj-bom = { module = "org.assertj:assertj-bom", version.ref = "assertj" }
+mockito-bom = { module = "org.mockito:mockito-bom", version.ref = "mockito" }
+
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
+assertj-core = { module = "org.assertj:assertj-core" }
+mockito-core = { module = "org.mockito:mockito-core" }
+mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter" }
+kotlin-logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
