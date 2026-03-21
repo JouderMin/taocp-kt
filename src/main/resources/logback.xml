@@ -1,0 +1,17 @@
+<configuration>
+    <!-- 日志级别设置 -->
+    <property name="LOG_LEVEL" value="DEBUG"/>
+
+    <!-- 控制台输出配置 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%-5level][%logger{36}]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- 根日志配置 -->
+    <root level="${LOG_LEVEL}">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

@@ -15,6 +15,8 @@ repositories {
 
 dependencies {
     implementation(libs.kotlin.logging.jvm)
+    implementation(libs.slf4j.api)
+    implementation(libs.logback.classic)
 
     testImplementation(platform(libs.junit.bom))
     testImplementation(platform(libs.assertj.bom))

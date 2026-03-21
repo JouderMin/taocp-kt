@@ -1,6 +1,13 @@
 package prog2_1
 
+import io.github.oshai.kotlinlogging.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLoggingConfiguration
 import java.util.Objects.isNull
+
+private val logger = run {
+    KotlinLoggingConfiguration.logStartupMessage = false
+    KotlinLogging.logger {}
+}
 
 /**
  * 扑克牌花色枚举类
