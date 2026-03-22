@@ -1,13 +1,6 @@
 package prog2_1
 
-import io.github.oshai.kotlinlogging.KotlinLogging
-import io.github.oshai.kotlinlogging.KotlinLoggingConfiguration
 import java.util.Objects.isNull
-
-private val logger = run {
-    KotlinLoggingConfiguration.logStartupMessage = false
-    KotlinLogging.logger {}
-}
 
 /**
  * 扑克牌花色枚举类
@@ -78,11 +71,6 @@ data class Card(val suit: Suit, val rank: Rank) {
     var tag: Boolean? = null
 
     /**
-     * 指向下一张卡片的引用
-     */
-    var next: Card? = null
-
-    /**
      * 返回卡片的字符串表示
      * 根据标签状态决定是否在卡片表示外添加括号
      *
@@ -103,13 +91,13 @@ data class Card(val suit: Suit, val rank: Rank) {
  *
  * @param current 当前迭代位置的卡片引用
  */
-class CardDeckIterator(private var current: Card?) : Iterator<Card> {
+internal class CardDeckIterator(private var current: CardDeckNode?) : Iterator<Card> {
     /**
      * 检查是否有下一张卡片
      *
-     * @return 如果当前卡片不为空且有下一张卡片，则返回 true，否则返回 false
+     * @return 如果当前卡片不为空，则返回 true，否则返回 false
      */
-    override fun hasNext(): Boolean = current != null && current!!.next != null
+    override fun hasNext(): Boolean = current != null
 
     /**
      * 获取下一张卡片并移动迭代位置
@@ -119,8 +107,12 @@ class CardDeckIterator(private var current: Card?) : Iterator<Card> {
     override fun next(): Card {
         val next = current!!
         current = next.next
-        return next
+        return next.card
     }
+}
+
+internal class CardDeckNode(val card: Card) {
+    internal var next: CardDeckNode? = null
 }
 
 /**
@@ -132,7 +124,7 @@ class CardDeck : Iterable<Card> {
     /**
      * 牌组的头部卡片引用
      */
-    private var head: Card? = null
+    private var head: CardDeckNode? = null
 
     /**
      * 获取牌组的迭代器
@@ -153,16 +145,39 @@ class CardDeck : Iterable<Card> {
      */
     fun addCardAtTop(card: Card, tag: Boolean) {
         card.tag = tag
-        if (isNull(head)) {
-            head = card
-        } else {
-            var current = head
-            // 遍历到链表的末尾
-            while (current!!.next != null) {
-                current = current.next
-            }
-            // 将新卡片添加到链表末尾
-            current.next = card
+        val newHead = CardDeckNode(card)
+        newHead.next = head
+        head = newHead
+    }
+
+    /**
+     * 算法 B
+     * 统计一叠牌的张数
+     *
+     * @return 牌组中卡片的数量
+     */
+    fun countCards(): Int {
+        var count = 0
+        var current = head
+        while (current != null) {
+            count++
+            current = current.next
         }
+        return count
+    }
+
+    /**
+     * 习题 3
+     * 从一叠纸牌中取走顶部的牌
+     *
+     * @return 从牌组顶部移除的卡片
+     */
+    fun popTopCard(): Card? {
+        if (isNull(head)) {
+            return null
+        }
+        val topCard = head!!.card
+        head = head!!.next
+        return topCard
     }
 }
