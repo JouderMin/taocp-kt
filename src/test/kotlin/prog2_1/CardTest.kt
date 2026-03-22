@@ -91,7 +91,7 @@ class CardTest {
         val cards = listOf(Card(Suit.HEARTS, Rank.ACE), Card(Suit.CLUBS, Rank.TEN), Card(Suit.DIAMONDS, Rank.KING))
         val cardsRev = cards.reversed()
 
-        for (card in cards) {
+        cards.forEach { card ->
             cardDeck.addCardAtTop(card, true)
         }
 
@@ -116,7 +116,7 @@ class CardTest {
 
         // 测试添加卡片后 countCards 方法
         val cards = listOf(Card(Suit.HEARTS, Rank.ACE), Card(Suit.CLUBS, Rank.TEN), Card(Suit.DIAMONDS, Rank.KING))
-        for (card in cards) {
+        cards.forEach { card ->
             cardDeck.addCardAtTop(card, true)
         }
         assertThat(cardDeck.countCards()).isEqualTo(cards.size)
@@ -149,7 +149,7 @@ class CardTest {
 
         // 初始化牌组，添加三张卡片
         val cards = listOf(Card(Suit.HEARTS, Rank.ACE), Card(Suit.CLUBS, Rank.TEN), Card(Suit.DIAMONDS, Rank.KING))
-        for (card in cards) {
+        cards.forEach { card ->
             cardDeck.addCardAtTop(card, true)
         }
 
@@ -158,6 +158,110 @@ class CardTest {
 
         // 断言返回值为顶部卡片
         assertThat(topCard).isEqualTo(cards[2])
+
+        // 断言牌组中卡片数量为 2
+        assertThat(cardDeck.countCards()).isEqualTo(2)
+    }
+
+    /**
+     * 测试 addCardAtBottom 方法
+     * 牌组为空
+     */
+    @Test
+    fun testAddCardAtBottom_Empty() {
+        // 创建牌组实例
+        val cardDeck = CardDeck()
+        val card = Card(Suit.HEARTS, Rank.ACE)
+
+        // 测试 addCardAtBottom 方法，牌组为空
+        cardDeck.addCardAtBottom(card)
+
+        // 断言牌组中卡片数量为 1
+        assertThat(cardDeck.countCards()).isEqualTo(1)
+        cardDeck.forEach { card ->
+            assertThat(card.toString()).isEqualTo("(H1)")
+        }
+    }
+
+    /**
+     * 测试 addCardAtBottom 方法
+     * 牌组不为空
+     */
+    @Test
+    fun testAddCardAtBottom_NotEmpty() {
+        // 创建牌组实例
+        val cardDeck = CardDeck()
+        val cards = listOf(Card(Suit.HEARTS, Rank.ACE), Card(Suit.CLUBS, Rank.TEN))
+        val exceptedCards = listOf("(H1)", "(C10)")
+
+        // 测试 addCardAtBottom 方法，牌组不为空
+        cards.forEach { card ->
+            cardDeck.addCardAtBottom(card)
+        }
+
+        // 断言牌组中卡片数量为 2
+        assertThat(cardDeck.countCards()).isEqualTo(2)
+        cardDeck.forEachIndexed { index, card ->
+            assertThat(card.toString()).isEqualTo(exceptedCards[index])
+        }
+    }
+
+    /**
+     * 测试 popBottomCard 方法
+     * 牌组为空
+     */
+    @Test
+    fun testPopBottomCard_Empty() {
+        // 创建牌组实例
+        val cardDeck = CardDeck()
+
+        // 测试 popBottomCard 方法，牌组为空
+        val card = cardDeck.popBottomCard()
+
+        // 断言返回值为 null
+        assertThat(card).isNull()
+    }
+
+    /**
+     * 测试 popBottomCard 方法
+     * 牌组长度为 1
+     */
+    @Test
+    fun testPopBottomCard_OneCard() {
+        // 创建牌组实例
+        val cardDeck = CardDeck()
+        val card = Card(Suit.HEARTS, Rank.ACE)
+
+        // 测试 popBottomCard 方法，牌组长度为 1
+        cardDeck.addCardAtBottom(card)
+
+        // 断言返回值为顶部卡片
+        val bottomCard = cardDeck.popBottomCard()
+        assertThat(bottomCard).isEqualTo(card)
+
+        // 断言牌组中卡片数量为 0
+        assertThat(cardDeck.countCards()).isEqualTo(0)
+    }
+
+    /**
+     * 测试 popBottomCard 方法
+     * 牌组长度更长
+     */
+    @Test
+    fun testPopBottomCard_MultipleCards() {
+        // 创建牌组实例
+        val cardDeck = CardDeck()
+        val cards = listOf(Card(Suit.HEARTS, Rank.ACE), Card(Suit.CLUBS, Rank.TEN), Card(Suit.DIAMONDS, Rank.KING))
+
+        // 初始化牌组，添加三张卡片
+        cards.forEach { card ->
+            cardDeck.addCardAtBottom(card)
+        }
+
+        // 断言牌组中卡片数量为 3
+        assertThat(cardDeck.countCards()).isEqualTo(3)
+        val card = cardDeck.popBottomCard()
+        assertThat(card).isEqualTo(cards[2])
 
         // 断言牌组中卡片数量为 2
         assertThat(cardDeck.countCards()).isEqualTo(2)

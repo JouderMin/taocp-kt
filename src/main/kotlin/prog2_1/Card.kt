@@ -180,4 +180,49 @@ class CardDeck : Iterable<Card> {
         head = head!!.next
         return topCard
     }
+
+    /**
+     * 习题 4
+     * 将新牌面朝下添加到牌组底部
+     *
+     * @param card 要添加的卡片
+     */
+    fun addCardAtBottom(card: Card) {
+        card.tag = false
+        val newBottom = CardDeckNode(card)
+        if (isNull(head)) {
+            head = newBottom
+            return
+        }
+        var current = head!!
+        while (current.next != null) {
+            current = current.next!!
+        }
+        current.next = newBottom
+    }
+
+    /**
+     * 习题 5
+     * 抽走牌组底部的牌
+     *
+     * @return 从牌组底部移除的卡片，若牌组为空则返回 null
+     */
+    fun popBottomCard(): Card? {
+        if (isNull(head)) {
+            return null
+        }
+        if (isNull(head!!.next)) {
+            val current = head!!.card
+            head = null
+            return current
+        }
+
+        var current = head!!
+        while (current.next!!.next != null) {
+            current = current.next!!
+        }
+        val bottomCard = current.next!!.card
+        current.next = null
+        return bottomCard
+    }
 }
